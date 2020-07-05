@@ -95,7 +95,7 @@ export default {
 }
 
 .aButton {
-  padding: 12px 20px;
+  padding: 15px 20px;
   border: 30px;
   color: white;
   background: $primary-color;
@@ -109,7 +109,7 @@ export default {
   }
   .loader {
     margin: auto;
-    margin: -9px auto;
+    margin: -15px auto;
   }
   &__background {
     position: relative;
