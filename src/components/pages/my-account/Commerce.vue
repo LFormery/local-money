@@ -1,8 +1,8 @@
 <template>
   <div>
-    <ActualityFilter :filters="filtersArray">
+    <!-- <ActualityFilter :filters="filtersArray">
       <template> Les entreprises du réseaux  </template>
-    </ActualityFilter>
+    </ActualityFilter> -->
     <l-wrapper-block>
       <m-card-post :hasFooter="false" v-for="(company, index) in companiesList" :key="index"  >
         <template v-slot:header> {{ company.company_name }} </template>
@@ -14,12 +14,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import ActualityFilter from '../../molecules/MActualityFilter.vue';
+// import ActualityFilter from '../../molecules/MActualityFilter.vue';
 
 export default {
   name: 'Commerce',
   components: {
-    ActualityFilter,
+    // ActualityFilter,
   },
   computed: {
     ...mapGetters([

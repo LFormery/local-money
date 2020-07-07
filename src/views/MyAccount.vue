@@ -1,6 +1,6 @@
 <template>
   <div class="myAccount">
-    <l-header-myCompte :name="userFirstName" />
+    <l-header-myCompte :name="userInfomations.first_name" />
     <div class="myAccountContenu">
       <router-view />
     </div>
@@ -71,12 +71,6 @@ export default {
         },
         {
           functionBind: () => {
-            this.switchPage('SendPost');
-          },
-          pageNameBind: 'donner de mes nouvelles',
-        },
-        {
-          functionBind: () => {
             this.switchPage('Commerce');
           },
           pageNameBind: 'Mes favoris',
@@ -107,11 +101,12 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['compteType', 'userToken', 'userFirstName']),
+    ...mapGetters(['compteType', 'userToken', 'userInfomations']),
   },
   methods: {
     switchPage(pageName) {
       if (this.currentPageName !== pageName) {
+        console.log(this.currentPageName, pageName);
         this.$router.push({ name: pageName });
         this.menuIsOpen = false;
       }
@@ -141,6 +136,14 @@ export default {
   },
   mounted() {
     this.getDetail();
+    if (this.compteType === 'company') {
+      this.navSecondary.splice(2, 0, {
+        functionBind: () => {
+          this.switchPage('SendPost');
+        },
+        pageNameBind: 'donner de mes nouvelles',
+      });
+    }
   },
   watch: {
     compteType() {

@@ -41,7 +41,6 @@ export default {
   },
   watch: {
     isOpen(isOpen) {
-      console.log(isOpen);
       if (isOpen) {
         this.$anime.openMenu();
       } else {

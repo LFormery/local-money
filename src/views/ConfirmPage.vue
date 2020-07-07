@@ -30,8 +30,9 @@ export default {
     display: block;
   }
   .wrapperButton {
-    width: 100%;
-    padding: 0 30px;
+    width: 70%;
+    margin: 0 auto;
+    padding: 0 0px;
   }
 }
 </style>

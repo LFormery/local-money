@@ -1,10 +1,10 @@
 <template>
   <div class="home">
 
-    <HeaderInformation :name="userFirstName">
+    <HeaderInformation :name="userInfomations.first_name">
       <template v-slot:mainText>
         Bonjour
-        <span class="name">{{ userFirstName }}</span>
+        <span class="name">{{ userInfomations.first_name }}</span>
       </template>
       <template v-slot:subText>Bienvenue sur votre espace 😁 !</template>
     </HeaderInformation>
@@ -50,7 +50,7 @@ export default {
     ...mapGetters([
       'transactions',
       'companyPosts',
-      'userFirstName',
+      'userInfomations',
     ]),
     lastTrasacton() {
       const lastTransaction = [];

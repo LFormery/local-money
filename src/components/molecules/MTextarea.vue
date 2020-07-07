@@ -58,7 +58,7 @@ textarea {
 }
 
 label {
-  display: block;
+  @include labelInput;
 }
 .errorMessage {
   color: #ff3b3b;

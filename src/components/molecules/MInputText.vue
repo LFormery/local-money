@@ -1,16 +1,19 @@
 <template>
   <div class="MInput">
-    <label :for="name">{{placeholder}}</label>
-    <input
-      :id="name"
-      ref="input"
-      :name="name"
-      :maxlength="maxlength"
-      :rules="rules"
-      :placeholder="exemple"
-      v-model="model"
-      :type="type"
-    />
+    <span class="wrapperInputLabel">
+      <label :for="name">{{ label || placeholder}}</label>
+      <input
+        :id="name"
+        ref="input"
+        :name="name"
+        :maxlength="maxlength"
+        :rules="rules"
+        value="model"
+        :placeholder="exemple"
+        v-model="model"
+        :type="type"
+      />
+    </span>
     <span class="errorMessage">{{errors[0]}}</span>
   </div>
 </template>
@@ -20,7 +23,7 @@ export default {
   name: 'MInput',
   data() {
     return {
-      model: this.$attrs.value || '',
+      model: this.$attrs.value,
     };
   },
   props: {
@@ -44,6 +47,12 @@ export default {
       type: String,
       default: '50',
     },
+    disabled: {
+      default: false,
+    },
+    label: {
+      default: '',
+    },
     type: {
       type: String,
       default: 'text',
@@ -51,6 +60,8 @@ export default {
   },
   watch: {
     model(newVal, oldVal) {
+      const regex = new RegExp('[0-9]| ');
+
       if (newVal > oldVal) {
         if (
           this.mask
@@ -60,14 +71,21 @@ export default {
           this.model += this.mask[newVal.length];
         }
       }
-      // console.log();
-      if (this.type === 'tel' && /\D/.test(newVal)) {
+
+      if (this.type === 'tel' && !regex.test(newVal[newVal.length - 1])) {
         this.model.slice(1);
         this.model = this.model.slice(0, this.model.length - 1);
         return;
       }
+
       this.$emit('input', newVal);
     },
+  },
+  '$attrs.value': function (newVal, oldVal) {
+    console.log(newVal, oldVal);
+    if (newVal !== oldVal) {
+      this.model = newVal;
+    }
   },
   computed: {
     placeholder() {
@@ -86,14 +104,7 @@ export default {
   margin: 10px 0px;
 }
 label {
-  display: block;
-  font-weight: 600;
-  font-size: 0.875rem;
-  padding-left: 0.25rem;
-  padding-right: 0.25rem;
-  padding-bottom: 0.5rem;
-  color: $gray;
-  margin: 5px 0px;
+  @include labelInput;
 }
 input {
   background: #ffffff;
@@ -107,5 +118,6 @@ input {
 }
 .errorMessage {
   color: #ff3b3b;
+  font-size: 16px;
 }
 </style>

@@ -33,9 +33,8 @@ export default {
     ...mapGetters([
       'transactions',
       'userToken',
-      'userFirstName',
       'compteType',
-      'userId',
+      'userInfomations',
       'solde',
       'transferId',
     ]),

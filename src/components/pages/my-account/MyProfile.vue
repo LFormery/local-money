@@ -1,8 +1,8 @@
 <template>
   <div>
-    <l-header-informations :name="userFirstName">
-      <template v-slot:mainText >{{ userFirstName }}</template>
-      <template v-slot:subText >Votre identifiant : {{userId}}<br> <span v-if="compteType ==='company'">Compte profesionne</span></template>
+    <l-header-informations :name=" userInfomations.first_name">
+      <template v-slot:mainText >{{ userInfomations.first_name }}</template>
+      <template v-slot:subText >Votre identifiant : {{userInfomations.id}}<br> <span v-if="compteType ==='company'">Compte profesionne</span></template>
     </l-header-informations>
    <a-switch-button
       name="switch__page__transaction"
@@ -10,7 +10,7 @@
       :leftText="switchButton.leftText"
       :rightText="switchButton.rightText"
     />
-    <router-view></router-view>
+    <router-view :contacts="contacts" ></router-view>
   </div>
 </template>
 
@@ -40,7 +40,7 @@ export default {
   watch: {
     mode(newPageName) {
       if (newPageName !== 'myContacts' || newPageName !== 'MyInformation') {
-        this.$router.push({ name: newPageName });
+        this.$router.push({ name: newPageName }).catch(() => {});
       }
     },
     $route(to) {
@@ -51,11 +51,12 @@ export default {
     ...mapGetters([
       'transactions',
       'userToken',
-      'userFirstName',
+      'userInfomations',
       'compteType',
-      'userId',
+      'companyPosts',
       'solde',
       'transferId',
+      'contacts',
     ]),
   },
 };

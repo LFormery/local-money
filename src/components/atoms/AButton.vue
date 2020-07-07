@@ -1,5 +1,5 @@
 <template>
-<button class="aButtonWrapper">
+<button :type="type" class="aButtonWrapper">
   <span v-if="hasSecondaryBackground" class="backgroundButton" :style="{background : buttonStyle.background}"></span>
   <button class="aButton" :style="buttonStyle" :type="type">
     <span v-if="!onload">

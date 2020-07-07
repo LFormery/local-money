@@ -1,7 +1,7 @@
 <template>
   <div class="likeHeart">
-    <svg>
-      <path :style="currentState" xmlns="http://www.w3.org/2000/svg" d="M285.257,35.528c58.743,0.286,106.294,47.836,106.58,106.58   c0,107.624-195.918,214.204-195.918,214.204S0,248.165,0,142.108c0-58.862,47.717-106.58,106.58-106.58l0,0   c36.032-0.281,69.718,17.842,89.339,48.065C215.674,53.517,249.273,35.441,285.257,35.528z"/>
+    <svg width="26" height="22" viewBox="0 0 26 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path :style="currentState" d="M18.928 0.357636C22.8258 0.376613 25.981 3.53175 26 7.42966C26 14.571 13 21.643 13 21.643C13 21.643 0 14.467 0 7.42966C0 3.52392 3.16622 0.357636 7.07202 0.357636C9.46289 0.33899 11.6981 1.54153 13 3.54695C14.3109 1.55128 16.5403 0.351863 18.928 0.357636Z" fill="#D7443E"/>
     </svg>
   </div>
 </template>
@@ -17,7 +17,9 @@ export default {
           strokeWidth: '0px',
         },
         isDisLiked: {
-          strokeWidth: '20px',
+          stroke: '#030303',
+          strokeWidth: '1px',
+          fill: 'none',
         },
       },
     };
@@ -37,15 +39,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-svg {
-  width: 60px;
-  height: 60px;
-  padding-left: 5px;
-  path {
-    transform: scale(0.1);
-    stroke: black;
-    stroke-width: 20px;
-    fill: none;
-  }
+.likeHeart {
+  margin-right: 20px;
+  background-color: #fefefe;
+  display: block;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
 }
 </style>

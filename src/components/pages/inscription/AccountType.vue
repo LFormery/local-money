@@ -13,6 +13,11 @@
 
 export default {
   name: 'TypeOfAccount',
+  data() {
+    return {
+      gouvernanceList: [],
+    };
+  },
   props: {
     toNextPage: {
       type: Function,

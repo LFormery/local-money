@@ -1,13 +1,14 @@
 const initialState = () => ({
+  userInfomations: {},
   userToken: '',
   userId: null,
   compteType: '',
-  userFirstName: '',
   solde: null,
   transferId: null,
   transactions: [],
   companiesList: [],
   companyPosts: [],
+  contacts: [],
 });
 
 export default {
@@ -16,15 +17,16 @@ export default {
 
   // Getter functions
   getters: {
+    userInfomations: (state) => state.userInfomations,
     userToken: (state) => state.userToken,
     userId: (state) => state.userId,
-    userFirstName: (state) => state.userFirstName,
     compteType: (state) => state.compteType,
     solde: (state) => state.solde,
     transferId: (state) => state.transferId,
     transactions: (state) => state.transactions,
     companiesList: (state) => state.companiesList,
     companyPosts: (state) => state.companyPosts,
+    contacts: (state) => state.contacts,
   },
 
   actions: {
@@ -34,8 +36,15 @@ export default {
     setToken(context, token) {
       context.commit('SET_TOKEN', token);
     },
-    setUserId(context, userId) {
-      context.commit('SET_USER_ID', Number(userId));
+    setUserInformations(context, informations) {
+      const informationAutorised = ['id', 'type', 'first_name', 'last_name', 'address', 'number_phone'];
+      const informationsValid = {};
+      Object.entries(informations).forEach(([key, val]) => {
+        if (informationAutorised.indexOf(key) !== -1) {
+          informationsValid[key] = val;
+        }
+      });
+      context.commit('SET_INFORMATIONS', informationsValid);
     },
     setCompteType(context, compteType) {
       context.commit('SET_COMPTE_TYPE', compteType);
@@ -55,14 +64,21 @@ export default {
     setCompanyPosts(context, companyPosts) {
       context.commit('SET_COMPANIESPOST', companyPosts);
     },
+    setContacts(context, contacts) {
+      context.commit('SET_CONTACTS', contacts);
+    },
+    removeContact(context, contactId) {
+      const newConcats = this.getters.contacts.filter((contacts) => contacts.account_id !== Number(contactId));
+      context.commit('SET_CONTACTS', newConcats);
+    },
     reset({ commit }) {
       commit('RESET');
     },
   },
 
   mutations: {
-    SET_USER_FIRSTNAME(state, userFirstName) {
-      state.userFirstName = userFirstName;
+    SET_INFORMATIONS(state, informations) {
+      state.userInfomations = { ...state.userInfomations, ...informations };
     },
     SET_TOKEN(state, token) {
       state.userToken = token;
@@ -89,6 +105,9 @@ export default {
     },
     SET_COMPANIESPOST(state, companyPosts) {
       state.companyPosts = companyPosts;
+    },
+    SET_CONTACTS(state, contacts) {
+      state.contacts = contacts;
     },
     RESET(state) {
       const newState = initialState();

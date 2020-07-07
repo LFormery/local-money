@@ -4,7 +4,7 @@
       <p>Donnez des nouvelles de votre activité<br> au près des autres adhérents </p>
       <a-button  width="100%" @click.native="$router.push({ name : 'SendPost'})" class="buttonGiveNew">Donner de vos nouvelles</a-button>
     </l-wrapper-block>
-    <actuality-filter> <template> Mon fils d'actualité </template> </actuality-filter>
+    <!-- <actuality-filter> <template> Mon fils d'actualité </template> </actuality-filter> -->
     <!-- HERE IS PLACE FOR INPUT TO COMPANY SEND POST  -->
      <l-wrapper-block>
       <m-card-post v-for="(items, index) in companyPosts" :key="index" :Numberlikes="items.likes" :idOfPost="items.post_id" :isLiked="items.liked" >
@@ -17,7 +17,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import ActualityFilter from '../../molecules/MActualityFilter.vue';
+// import ActualityFilter from '../../molecules/MActualityFilter.vue';
 
 export default {
   name: 'Community',
@@ -27,7 +27,7 @@ export default {
     };
   },
   components: {
-    ActualityFilter,
+    // ActualityFilter,
   },
   created() {
     this.setCompanyArray();

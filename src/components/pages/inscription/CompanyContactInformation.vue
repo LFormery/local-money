@@ -1,6 +1,12 @@
 <template>
   <ValidationObserver ref="observer">
-    <div class="mt-10">
+    <div>
+      <ValidationProvider name="Nom" rules="required|alpha_dash|min:3" v-slot="{ errors }">
+        <m-input :errors="errors" name="first_name" v-model="firstName" exemple="Guilloux">Nom</m-input>
+      </ValidationProvider>
+      <ValidationProvider name="prenom" rules="required|min:3" v-slot="{ errors }">
+        <m-input v-model="lastName" name="last_name" :errors="errors" exemple="Brontis" class="mt-4">Prenom</m-input>
+      </ValidationProvider>
       <ValidationProvider name="age" rules="required|min:10|majority" v-slot="{ errors }">
         <m-input :errors="errors" name="date_of_birth" type="date" v-model="birthDay" maxlength="8" exemple="30/09/1998">Age</m-input>
       </ValidationProvider>
@@ -28,6 +34,8 @@ export default {
   name: 'InformationContact',
   data() {
     return {
+      firstName: '',
+      lastName: '',
       birthDay: '',
       phoneNumber: '',
       email: '',
@@ -38,6 +46,12 @@ export default {
   watch: {
     model(newVal) {
       this.$emit('input', newVal);
+    },
+    firstName(newVal) {
+      this.$emit('updateForm', { firstName: newVal });
+    },
+    lastName(newVal) {
+      this.$emit('updateForm', { lastName: newVal });
     },
     birthDay(newVal) {
       this.$emit('updateForm', { birthDay: newVal });

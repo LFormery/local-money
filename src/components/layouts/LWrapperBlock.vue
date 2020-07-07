@@ -31,6 +31,7 @@ export default {
 .wrapperBlock {
   border-radius: 35px;
   padding: 40px 25px;
+  padding-top: 47px;
   margin: 10px 0px;
 
   .title {

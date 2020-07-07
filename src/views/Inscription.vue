@@ -4,11 +4,10 @@
       <div class="header">
         <span>
           <a-button
-            v-if="previousPath"
             background="white"
             :hasSecondaryBackground="false"
             color="#189B73"
-            @click.native="toPreviousPage()"
+            @click.native="$router.go(-1)"
           >
             <a-icone-back-arrow />
           </a-button>
@@ -19,44 +18,46 @@
         </div>
       </div>
     </template>
-    <router-view
-      :toNextPage="toNextPage"
-      :initFormData="{...formDatas}"
-      @updateForm="( formData ) => { updateForm(formData) }"
-      @updateFormValid="(val) => {formValid = val}"
-    />
+    <template>
+      <router-view
+        :toNextPage="toNextPage"
+        :initFormData="{...formDatas}"
+        @updateForm="( formData ) => { updateForm(formData) }"
+      />
+    </template>
     <template v-slot:bottom>
       <a-button
         width="100%"
-        v-if="currentNamePage !== 'AccountType'"
         type="submit"
         :onload="buttonOnload"
-        class="w-full"
+        v-if="currentNamePage !=='AccountType'"
       >Suviant</a-button>
-      <a-button
+      <!-- <a-button
         width="100%"
-        v-if="currentNamePage === 'AccountType'"
         background="white"
         color="#189B73"
-        class="w-full"
+        v-if="!previousPath"
         @click.native="$router.push({ name: 'Register' })"
-      >Se connecter</a-button>
+      >Se connecter</a-button> -->
     </template>
   </l-regitster>
 </template>
 
 <script>
+
 export default {
   name: 'inscription',
   data() {
     return {
       formDatas: {
-        governanceId: 10,
       },
       submitted: false,
       formValid: false,
       buttonOnload: false,
     };
+  },
+  mounted() {
+    console.log(this.$router);
   },
   methods: {
     formatForm(payloadForm) {
@@ -67,23 +68,20 @@ export default {
       return payloadForm;
     },
     toNextPage() {
-      if (this.formValid) {
-        if (!this.pageSubmited) {
-          this.$router.push({
-            path: `${this.formDatas.type}-${this.nextPath}`,
+      if (!this.pageSubmited) {
+        const { nextPath } = this;
+        const newPath = this.formDatas.type ? `${this.formDatas.type}-${nextPath}` : nextPath;
+        this.$router.push({
+          path: newPath,
+        });
+
+        this.formValid = false;
+      } else {
+        this.buttonOnload = true;
+        this.$Api.postRegister(this.formatForm(this.formDatas))
+          .catch((error) => {
+            console.log(error);
           });
-          this.formValid = false;
-        } else {
-          this.buttonOnload = true;
-          this.$Api
-            .postRegister(this.formatForm(this.formDatas))
-            .then(() => {
-              this.$router.push({ name: 'Home' });
-            })
-            .catch((error) => {
-              console.error(error);
-            });
-        }
       }
     },
     toPreviousPage() {
@@ -127,6 +125,11 @@ export default {
     padding-left: 10px ;
     .title {
       margin: auto;
+      font-family: $secondary-font;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 22px;
+      line-height: 26px;
     }
     .subText {
       padding-top: 1px;

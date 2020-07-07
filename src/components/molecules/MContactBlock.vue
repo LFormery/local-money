@@ -1,7 +1,7 @@
 <template>
   <div class="mContactBlock">
-    <span>Marcel Duchamp</span>
-    <a-icone-modify/>
+    <span>{{$props.contactName}}</span>
+    <a-icone-modify @click.native="$emit('clickRemove')"/>
   </div>
 </template>
 
@@ -9,7 +9,11 @@
 
 export default {
   name: 'MContactBlock',
-
+  props: {
+    contactName: {
+      default: '',
+    },
+  },
 };
 
 </script>

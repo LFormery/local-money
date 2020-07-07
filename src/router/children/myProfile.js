@@ -9,7 +9,7 @@ export default [
     },
   },
   {
-    path: 'ajouter-modifier-contact/:type',
+    path: 'ajouter-modifier-contact/:type/',
     component: () => import('@/components/pages/my-account/MyProfile/AddModifyContact.vue'),
     name: 'AddModifyContact',
     meta: {

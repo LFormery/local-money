@@ -1,6 +1,6 @@
 <template>
   <ValidationObserver ref="observer">
-    <div class="mt-10">
+    <div>
       <ValidationProvider name="Nom" rules="required|alpha_dash|min:3" v-slot="{ errors }">
         <m-input :errors="errors" name="first_name" v-model="firstName" exemple="Guilloux">Nom</m-input>
       </ValidationProvider>
