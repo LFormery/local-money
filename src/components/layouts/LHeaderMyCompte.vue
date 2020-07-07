@@ -1,6 +1,6 @@
 <template>
   <div class="lHeaderMyCompte">
-    <a-user-picture @click.native="$router.push({ name : 'MyInformations' })" v-if="hasUserPicto" >{{$props.name[0]}}</a-user-picture>
+    <a-user-picture @click.native="$router.push({ name : 'MyInformations' })" v-if="hasUserPicto" >{{$props.name && $props.name[0]}}</a-user-picture>
     <img @click="$router.push({ name : 'Home' })" class="logo" src="/logo.svg" alt="">
   </div>
 </template>

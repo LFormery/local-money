@@ -1,8 +1,8 @@
+/* eslint-disable */
 /**
  * the plugin with all généric api call,
  * this is also same than axios, for do a call to the api
  */
-/* eslint-disable */
 
 class EventDispatcher {
 
@@ -47,6 +47,8 @@ class EventDispatcher {
   }
 }
 
+/* eslint-enable */
+
 class ApiRequest extends EventDispatcher {
   constructor(VUE) {
     super();
@@ -54,7 +56,7 @@ class ApiRequest extends EventDispatcher {
     this.request = this._Api();
     this.token = '';
     this.userType = '';
-    this.Vue = VUE
+    this.Vue = VUE;
   }
 
   /**
@@ -86,7 +88,7 @@ class ApiRequest extends EventDispatcher {
           return res.json().then((res2) => {
             reject(res2);
           });
-        }).catch((res) => reject(res && res.json()));
+        }).catch((res) => reject(res));
       }),
 
       /**
@@ -96,31 +98,40 @@ class ApiRequest extends EventDispatcher {
        * @return {Promise}
        */
       post: (path, payload) => new Promise((resolve, reject) => {
-        payload.Headers = payload.Headers ?  payload.Headers : {}
-        payload.Headers['Content-Type'] = payload.Headers['Content-Type'] ? payload.Headers['Content-Type'] : 'application/json';
-        fetch(path, {
-          ...init,
-          headers: new Headers(payload.Headers),
-          body: JSON.stringify(payload.body,),
-          method: 'post',
-        }).then((res) => {
-          if (res.ok) {
-            return resolve(res.json());
-          }
-          return res.json().then((res2) => {
-            reject(res2);
-          });
-        }).catch((res) => reject(res.json()));
-      }),
-      ///
-      delete: (path, payload) => new Promise((resolve, reject) => {
-        payload.Headers = payload.Headers ?  payload.Headers : {}
+        payload.Headers = payload.Headers ? payload.Headers : {};
         payload.Headers['Content-Type'] = payload.Headers['Content-Type'] ? payload.Headers['Content-Type'] : 'application/json';
         return fetch(path, {
           ...init,
           headers: new Headers(payload.Headers),
-          body: JSON.stringify(payload.body,),
+          body: JSON.stringify(payload.body),
+          method: 'post',
+        }).then((res) => {
+          if (res.ok) { return resolve(res.json()); }
+          return res.json().then((res2) => reject(res2));
+        }).catch((res) => reject(res));
+      }),
+      ///
+      delete: (path, payload) => new Promise((resolve, reject) => {
+        payload.Headers = payload.Headers ? payload.Headers : {};
+        payload.Headers['Content-Type'] = payload.Headers['Content-Type'] ? payload.Headers['Content-Type'] : 'application/json';
+        return fetch(path, {
+          ...init,
+          headers: new Headers(payload.Headers),
+          body: JSON.stringify(payload.body),
           method: 'delete',
+        }).then((res) => {
+          if (res.ok) { return resolve(res.json()); }
+          return res.json().then((res2) => reject(res2));
+        }).catch((res) => reject(res));
+      }),
+      put: (path, payload) => new Promise((resolve, reject) => {
+        payload.Headers = payload.Headers ? payload.Headers : {};
+        payload.Headers['Content-Type'] = payload.Headers['Content-Type'] ? payload.Headers['Content-Type'] : 'application/json';
+        return fetch(path, {
+          ...init,
+          headers: new Headers(payload.Headers),
+          body: JSON.stringify(payload.body),
+          method: 'put',
         }).then((res) => {
           if (res.ok) {
             return resolve(res.json());
@@ -145,7 +156,7 @@ class ApiRequest extends EventDispatcher {
     }
   }
 
-  setUserType (type) {
+  setUserType(type) {
     if (typeof type === 'string' && type.length) {
       this.userType = type;
     } else {
@@ -158,29 +169,21 @@ class ApiRequest extends EventDispatcher {
    * @param  {Object} loginInformaion information waiting , mail and passworld
    */
   login(loginInformaion) {
-    return new Promise((resolve, reject) => {
-      return this.post('/login_check', {body : loginInformaion })
-        .then((res) => {
-          this.dispatchEvent(new CustomEvent('session-user-login', { detail: res }));
-          console.log(res)
-          return resolve(res);
-        }).catch((res) => {
-          console.log(res)
-          return reject(res);
-        })
-    })
+    return new Promise((resolve, reject) => this.post('/login_check', { body: loginInformaion })
+      .then((res) => {
+        this.dispatchEvent(new CustomEvent('session-user-login', { detail: res }));
+        return resolve(res);
+      }).catch((res) => reject(res)));
   }
 
   getGouvernance() {
-    return new Promise((resolve, reject) => {
-      return this.get(`/governances`, {
-        Headers: { Authorization:`Bearer ${this.token}` },
-      }).then((response) => {
-        this.dispatchEvent(new CustomEvent('composant-gouvernanceList', { detail: response}));
-        return resolve(response)
-      })
-        .catch((response) => reject(response));
+    return new Promise((resolve, reject) => this.get('/governances', {
+      Headers: { Authorization: `Bearer ${this.token}` },
+    }).then((response) => {
+      this.dispatchEvent(new CustomEvent('composant-gouvernanceList', { detail: response }));
+      return resolve(response);
     })
+      .catch((response) => reject(response)));
   }
 
   /**
@@ -188,7 +191,7 @@ class ApiRequest extends EventDispatcher {
    * @param  {Object} loginInformaion information waiting , mail and passworld
    */
   postRegister(registerPayload) {
-    return this.post('/register', {body : registerPayload})
+    return this.post('/register', { body: registerPayload })
       .then((res) => {
         this.dispatchEvent(new CustomEvent('user-registred', { detail: registerPayload }));
         return res;
@@ -200,14 +203,12 @@ class ApiRequest extends EventDispatcher {
    * @param  {String} token token of custumer
    */
   getUserInfo(token) {
-    return new Promise((resolve, reject) => {
-      return this.get('/me', { Headers: { Authorization: `Bearer ${token || this.token}` } })
-        .then((res) => {
-          this.dispatchEvent(new CustomEvent('session-user-information', { detail: res }));
-          return resolve(res);
-        })
-        .catch((res) => reject(res));
-    })
+    return new Promise((resolve, reject) => this.get('/me', { Headers: { Authorization: `Bearer ${token || this.token}` } })
+      .then((res) => {
+        this.dispatchEvent(new CustomEvent('session-user-information', { detail: res }));
+        return resolve(res);
+      })
+      .catch((res) => reject(res)));
   }
 
   /**
@@ -216,177 +217,166 @@ class ApiRequest extends EventDispatcher {
    */
   getDetails(type = this.userType) {
     if (type) {
-      return new Promise((resolve, reject) => {
-        return this.get(`/${type}/account`, { Headers: { Authorization: `Bearer ${this.token}` , 'Content-Type': 'application/x-www-form-urlencoded'} })
-          .then((res) => {
-            this.dispatchEvent(new CustomEvent('session-user-details', { detail: res.length ? res[0] : res }));
-            return resolve(res);
-          })
-          .catch((res) => reject(res));
-      })
+      return new Promise((resolve, reject) => this.get(`/${type}/account`, { Headers: { Authorization: `Bearer ${this.token}`, 'Content-Type': 'application/x-www-form-urlencoded' } })
+        .then((res) => {
+          this.dispatchEvent(new CustomEvent('session-user-details', { detail: res.length ? res[0] : res }));
+          return resolve(res);
+        })
+        .catch((res) => reject(res)));
     }
+    return new Promise((resolve, reject) => reject());
   }
 
   /**
    * get the last transaction
-   * @param {string} 
+   * @param {string}
    */
   getMyTransaction() {
     return this.get('/transactions', {
       Headers: { Authorization: `Bearer ${this.token}` },
     }).then((response) => {
-      this.getDetails(this.userType)
-      this.dispatchEvent(new CustomEvent('session-user-transactions', { detail: response.length ? response[0] : response}));
+      this.getDetails(this.userType);
+      this.dispatchEvent(new CustomEvent('session-user-transactions', { detail: response }));
       return response;
     })
       .catch(((response) => response));
   }
 
+  putTransferMoney(transactionInformation) {
+    return new Promise((resolve, reject) => this.post('/transfer-money', {
+      Headers: { Authorization: `Bearer ${this.token}` },
+      body: transactionInformation,
+    }).then((response) => {
+      this.getMyTransaction();
+      this.getUserInfo();
+      return resolve(response);
+    })
+      .catch((response) => reject(response)));
+  }
+
+  getLocalMoney(transactionInformation) {
+    return new Promise((resolve, reject) => this.put('/convert-money', {
+      Headers: { Authorization: `Bearer ${this.token}` },
+      body: transactionInformation,
+    }).then((response) => {
+      this.getMyTransaction();
+      this.getUserInfo();
+      return resolve(response);
+    }).catch((response) => reject(response)));
+  }
+
+  checkCreditCard(payload) {
+    return new Promise((resolve, reject) => this.post('/check-credit-card', {
+      Headers: { Authorization: `Bearer ${this.token}` },
+      body: payload,
+    }).then((response) => {
+      this.getMyTransaction();
+      this.getUserInfo();
+      return resolve(response);
+    }).catch((response) => reject(response)));
+  }
+
   getCompanyPost() {
     return this.get('/posts', {
-      Headers: { Authorization:`Bearer ${this.token}` },
+      Headers: { Authorization: `Bearer ${this.token}` },
     }).then((response) => {
-      this.dispatchEvent(new CustomEvent('session-user-companypost', { detail: response}));
-      return response
+      this.dispatchEvent(new CustomEvent('session-user-companypost', { detail: response }));
+      return response;
     })
       .catch((response) => response);
   }
 
   getCompanyList() {
     return this.get('/companies', {
-      Headers: { Authorization:`Bearer ${this.token}` },
+      Headers: { Authorization: `Bearer ${this.token}` },
     }).then((response) => {
-      this.dispatchEvent(new CustomEvent('companies-list', { detail: response}));
-      return response
+      this.dispatchEvent(new CustomEvent('companies-list', { detail: response }));
+      return response;
     })
       .catch((response) => response);
   }
 
   getContactList() {
     return this.get('/contacts', {
-      Headers: { Authorization:`Bearer ${this.token}` },
+      Headers: { Authorization: `Bearer ${this.token}` },
     }).then((response) => {
-      this.dispatchEvent(new CustomEvent('companies-list', { detail: response}));
-      return response
+      this.dispatchEvent(new CustomEvent('companies-list', { detail: response }));
+      return response;
     })
       .catch((response) => response);
   }
-  
-  putTransferMoney(transactionInformation) {
-    return new Promise((resolve, reject) => {
-      return this.post('/transfer-money', {
-        Headers: { Authorization:`Bearer ${this.token}` },
-        body : transactionInformation,
-      }).then((response) => {
-        this.getMyTransaction()
-        this.getUserInfo()
-        return resolve(response)
-      })
-        .catch((response) => reject(response));
-    })
-  }
 
   putPost(payload) {
-    return new Promise((resolve, reject) => {
-      return this.post('/posts/create', {
-        Headers: { Authorization:`Bearer ${this.token}` },
-        body : payload,
-      }).then((response) => {
-        return resolve(response)
-      })
-        .catch((response) => reject(response));
-    })
+    return new Promise((resolve, reject) => this.post('/posts/create', {
+      Headers: { Authorization: `Bearer ${this.token}` },
+      body: payload,
+    }).then((response) => resolve(response))
+      .catch((response) => reject(response)));
   }
 
   putLike(idPost) {
-    return new Promise((resolve, reject) => {
-      return this.get(`/post/${idPost}/like`, {
-        Headers: { Authorization:`Bearer ${this.token}` },
-      }).then((response) => {
-        return resolve(response)
-      })
-        .catch((response) => reject(response));
-    })
+    return new Promise((resolve, reject) => this.get(`/post/${idPost}/like`, {
+      Headers: { Authorization: `Bearer ${this.token}` },
+    }).then((response) => resolve(response))
+      .catch((response) => reject(response)));
   }
 
   putDislike(idPost) {
-    return new Promise((resolve, reject) => {
-      return this.get(`/post/${idPost}/dislike`, {
-        Headers: { Authorization:`Bearer ${this.token}` },
-      }).then((response) => {
-        return resolve(response)
-      })
-        .catch((response) => reject(response));
-    })
+    return new Promise((resolve, reject) => this.get(`/post/${idPost}/dislike`, {
+      Headers: { Authorization: `Bearer ${this.token}` },
+    }).then((response) => resolve(response))
+      .catch((response) => reject(response)));
   }
 
   getContacts() {
-    return new Promise((resolve, reject) => {
-      return this.get(`/contacts`, {
-        Headers: { Authorization:`Bearer ${this.token}` },
-      }).then((response) => {
-        this.dispatchEvent(new CustomEvent('user-contacts', { detail: response}));
-        return resolve(response)
-      })
-        .catch((response) => reject(response));
+    return new Promise((resolve, reject) => this.get('/contacts', {
+      Headers: { Authorization: `Bearer ${this.token}` },
+    }).then((response) => {
+      this.dispatchEvent(new CustomEvent('user-contacts', { detail: response }));
+      return resolve(response);
     })
+      .catch((response) => reject(response)));
   }
-  
-  putContact(playload) {
-    return new Promise((resolve, reject) => {
-      return this.post(`/contacts/create`, {
-        Headers: { Authorization:`Bearer ${this.token}` },
-        body: playload,
-      }).then((response) => {
-        this.getContacts()
-        return resolve(response)
-      })
-        .catch((response) => reject(response));
+
+  putContact(payload) {
+    return new Promise((resolve, reject) => this.post('/contacts/create', {
+      Headers: { Authorization: `Bearer ${this.token}` },
+      body: payload,
+    }).then((response) => {
+      this.getContacts();
+      return resolve(response);
     })
+      .catch((response) => reject(response)));
   }
 
   removeContact(contactId) {
-    return new Promise((resolve, reject) => {
-      return this.delete(`/contacts/${contactId}/delete`, {
-        Headers: { Authorization:`Bearer ${this.token}` },
-      }).then((response) => {
-        this.dispatchEvent(new CustomEvent('remove-contact', { detail: contactId}));
-        return resolve(response)
-      })
-      .catch((response) => reject(response));
+    return new Promise((resolve, reject) => this.delete(`/contacts/${contactId}/delete`, {
+      Headers: { Authorization: `Bearer ${this.token}` },
+    }).then((response) => {
+      this.dispatchEvent(new CustomEvent('remove-contact', { detail: contactId }));
+      return resolve(response);
     })
+      .catch((response) => reject(response)));
   }
 
-  getFavorites(contactId) {
-    return new Promise((resolve, reject) => {
-      return this.get(`/favorites`, {
-        Headers: { Authorization:`Bearer ${this.token}` },
-      }).then((response) => {
-        return resolve(response)
-      })
-        .catch((response) => reject(response));
-    })
+  getFavorites() {
+    return new Promise((resolve, reject) => this.get('/favorites', {
+      Headers: { Authorization: `Bearer ${this.token}` },
+    }).then((response) => resolve(response))
+      .catch((response) => reject(response)));
   }
 
   /**
-   * @param  {Object} payload 
+   * @param  {Object} payload
    * @param {string} payload.accountId - exemple "170"
    */
-  addFavorites( payload ) {
-    return new Promise((resolve, reject) => {
-      return this.post(`/favorites/create`, {
-        Headers: { Authorization:`Bearer ${this.token}` },
-      }).then((response) => {
-        return resolve(response)
-      })
-        .catch((response) => reject(response));
-    })
+  addFavorites() {
+    return new Promise((resolve, reject) => this.post('/favorites/create', {
+      Headers: { Authorization: `Bearer ${this.token}` },
+    }).then((response) => resolve(response))
+      .catch((response) => reject(response)));
   }
 
-
-  
-
-  
   get(path, payload) {
     return this.request.get(this.uri + (path || ''), payload || {});
   }

@@ -6,7 +6,7 @@
       <div class="fieldConvert">
         <ValidationProvider>
           <o-transaction-input
-            v-model="transferedMoney"
+            v-model="transfered_money"
             :label="label"
             :errors="{}"
             name="sum_to_send"
@@ -17,13 +17,14 @@
           @click.native="switchMode()"
           background="white"
           :hasSecondaryBackground="false"
+          v-if="compteType === 'company'"
         >
           <a-icone-conver />
         </a-button>
       </div>
-      <div v-if="transferedMoney" class="bottom">
-        <p v-if="mode === 'local'">en euro {{transferedMoney}} €</p>
-        <p v-else>en monnaie locale {{transferedMoney}} mlc</p>
+      <div v-if="transfered_money" class="bottom">
+        <p v-if="mode === 'local'">en euro {{transfered_money}} €</p>
+        <p v-else>en monnaie locale {{transfered_money}} mlc</p>
       </div>
     </div>
   </ValidationObserver>
@@ -37,15 +38,16 @@ export default {
   data() {
     return {
       mode: 'local',
-      transferedMoney: '',
+      transfered_money: '',
     };
   },
   components: {
     'a-icone-conver': AiconvertArrow,
   },
+
   watch: {
-    transferedMoney(newVal) {
-      this.$emit('updateForm', { transferedMoney: newVal });
+    transfered_money(newVal) {
+      this.$emit('updateForm', { transfered_money: newVal });
     },
   },
   methods: {
@@ -55,9 +57,12 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['solde']),
+    ...mapGetters(['solde', 'userInfomations']),
     label() {
       return this.mode === 'local' ? 'MLC' : '€';
+    },
+    compteType() {
+      return this.userInfomations.type;
     },
   },
   mixins: [formMixin],

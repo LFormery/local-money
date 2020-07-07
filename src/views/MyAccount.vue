@@ -136,7 +136,7 @@ export default {
   },
   mounted() {
     this.getDetail();
-    if (this.compteType === 'company') {
+    if (this.userInfomations.type === 'company') {
       this.navSecondary.splice(2, 0, {
         functionBind: () => {
           this.switchPage('SendPost');

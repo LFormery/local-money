@@ -12,7 +12,15 @@
     <m-my-money></m-my-money>
     <l-wrapper-block>
       <template v-slot:title > Mes dernières transactions</template>
-      <m-card-transaction v-for="(transaction, index) in lastTrasacton" :key="index" :name="`utilisateur ${transaction.id}`" :date="transaction.date" :sum="transaction.transfered_money" />
+      <m-card-transaction
+        v-for="(transaction, index) in lastTrasacton"
+        :key="index"
+        :name="transaction.beneficiary_name"
+        :date="transaction.date"
+        :sum="transaction.transfered_money"
+        :statusTransactionUser="transaction.status_transaction_user"
+
+      ></m-card-transaction>
       <template v-slot:bottom ><a-link class="link" @click.native="$router.push({name : 'MyTransaction'})">Voir toutes mes transactions</a-link> </template>
     </l-wrapper-block>
     <l-wrapper-block>

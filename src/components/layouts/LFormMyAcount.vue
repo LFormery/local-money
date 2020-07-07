@@ -1,16 +1,18 @@
 <template>
-    <div
-      class="LFormMyAcount"
-      :style="{ 'box-shadow' : $props.boxShadow ,'background-color' : currentBackgroundColor  }"
-    >
-      <div class="header">
-        <slot class="title" name="header"></slot>
-      </div>
-      <form action v-on:submit.prevent="submit()">
+  <div
+    class="LFormMyAcount"
+    :style="{ 'box-shadow' : $props.boxShadow ,'background-color' : currentBackgroundColor  }"
+  >
+    <div class="header">
+      <slot class="title" name="header"></slot>
+    </div>
+    <ValidationObserver ref="observer" v-slot="{ valid, validate }">
+      <form action v-on:submit.prevent="submit(valid); validate()">
         <slot></slot>
         <slot name="bottom"></slot>
       </form>
-    </div>
+    </ValidationObserver>
+  </div>
 </template>
 
 <script>
@@ -30,8 +32,10 @@ export default {
     },
   },
   methods: {
-    submit() {
-      this.$emit('formSubmit');
+    submit(valid) {
+      if (valid) {
+        this.$emit('formSubmit');
+      }
     },
   },
 };
