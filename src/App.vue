@@ -45,7 +45,7 @@ export default {
     this.$Api.addEventListener('session-user-information', (event) => {
       this.$store.dispatch('setUserInformations', event.detail);
       this.$Api.setUserType(event.detail.type);
-      this.$Api.getDetails();
+      this.$Api.getDetails(event.detail.type);
     });
 
     // set infomation of user

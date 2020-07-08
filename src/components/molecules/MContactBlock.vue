@@ -1,12 +1,7 @@
 <template>
   <div class="mContactBlock">
-<<<<<<< HEAD
-    <span>{{$props.contactName}}</span>
-    <a-icone-modify @click.native="$emit('clickRemove')"/>
-=======
     <p>{{fullName || name}} <br><span class="type">{{type}}</span></p>
     <a-icone-remove @click.native="$emit('clickRemove')"/>
->>>>>>> develop
   </div>
 </template>
 
@@ -17,10 +12,6 @@ import AIconeRemove from '@/components/atoms/Icones/AIconeRemove.vue';
 export default {
   name: 'MContactBlock',
   props: {
-<<<<<<< HEAD
-    contactName: {
-      default: '',
-=======
     type: {},
     name: {},
     firstName: {},
@@ -32,7 +23,6 @@ export default {
   computed: {
     fullName() {
       return this.firstName && this.lastName ? `${this.firstName} ${this.lastName}` : this.name;
->>>>>>> develop
     },
   },
 };

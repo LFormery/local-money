@@ -156,8 +156,6 @@ export default {
           });
       }
     },
-<<<<<<< HEAD
-=======
 
     convert() {
       this.transactionOnload = true;
@@ -207,7 +205,6 @@ export default {
       }
     },
 
->>>>>>> develop
   },
   computed: {
     ...mapGetters(['transferId']),
