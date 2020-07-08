@@ -39,7 +39,7 @@ Librarie Javascript ***GreenSock***
 Apres reflexion nous pensons que cette librarie est la meilleur pour animé et donner vie a notre application.
 GreenSock est recconu pour sa legerté et son optimisation de plus sa syntaxe simple permet une prise en main rapide et efficace.
 
-Vuex
+Bibliothèque de gestionnaire d'état ***Vuex***
 
 le store de vuex est a été n'écéssaire à faire a fin d'améliorer l'experience utilisateur, et le développemnent de l'application.
 il permet de stocker une partie des informations de l'utilisateur dans le store, ce qui permet des temps de charge moins long afin qu'il puisse déja 
