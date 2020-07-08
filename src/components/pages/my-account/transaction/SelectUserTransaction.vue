@@ -11,7 +11,7 @@
           :errors="errors"
           name="zipCode"
           type="tel"
-          v-model="beneficiaryAccountNumber"
+          v-model="beneficiaryAccountId"
           maxlength="5"
           exemple="AC14FG"
         >Identifiant du bénéficiaire</m-input>
@@ -28,12 +28,12 @@ import formMixin from '@/mixins/formMixin';
 export default {
   data() {
     return {
-      beneficiaryAccountNumber: null,
+      beneficiaryAccountId: null,
     };
   },
   watch: {
-    beneficiaryAccountNumber(newVal) {
-      this.$emit('updateForm', { beneficiaryAccountNumber: newVal });
+    beneficiaryAccountId(newVal) {
+      this.$emit('updateForm', { beneficiaryAccountId: newVal });
     },
   },
   mixins: [formMixin],

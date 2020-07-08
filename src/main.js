@@ -5,7 +5,7 @@ import {
 } from 'vee-validate';
 // import g from 'gsap';
 import {
-  required, email, min, alpha_dash, max, max_value, min_value,numeric,// eslint-disable-line
+  required, email, min, alpha_dash, max, max_value, min_value,// eslint-disable-line
 } from 'vee-validate/dist/rules';
 import fr from 'vee-validate/dist/locale/fr.json';
 
@@ -38,7 +38,6 @@ extend('alpha_dash', alpha_dash); // eslint-disable-line
 extend('max', max);
 extend('max_value', max_value);
 extend('min_value', min_value);
-extend('numeric', numeric);
 
 extend('majority', {
   message: () => 'vous n\'avez pas l\'âge requis',

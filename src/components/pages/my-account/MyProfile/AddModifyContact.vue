@@ -1,6 +1,6 @@
 <template>
   <l-form-myacount backgroundColor="$gray-background">
-    <a-button @click.native="$router.go(-3)" background="white" :hasSecondaryBackground="false" class="buttonBack" color="$primary-color"> <a-icone-back-arrow /> </a-button>
+    <a-button @click.native="$router.go(-1)" background="white" :hasSecondaryBackground="false" class="buttonBack" color="$primary-color"> <a-icone-back-arrow /> </a-button>
     <p v-if="type === 'ajouter'">Avoir des contacts vous permet d’effectuer des transactions monétaires plus rapidement</p>
     <ValidationObserver>
       <ValidationProvider name="id" rules="required|min:3" v-slot="{ errors }">

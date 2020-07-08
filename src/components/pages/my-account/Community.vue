@@ -6,7 +6,7 @@
     </l-wrapper-block>
     <!-- <actuality-filter> <template> Mon fils d'actualité </template> </actuality-filter> -->
     <!-- HERE IS PLACE FOR INPUT TO COMPANY SEND POST  -->
-     <l-wrapper-block>
+     <l-wrapper-block ref="lWrapperBlock">
       <m-card-post v-for="(items, index) in companyPosts" :key="index" :Numberlikes="items.likes" :idOfPost="items.post_id" :isLiked="items.liked" >
         <template v-slot:header > {{ items.title }} </template>
         <template v-slot:main > {{ items.content }} </template>
@@ -31,6 +31,9 @@ export default {
   },
   created() {
     this.setCompanyArray();
+  },
+  mounted() {
+    this.$anime.animationOnMounted(this.$refs.lWrapperBlock.$el.querySelectorAll('.cardPost'));
   },
   methods: {
     setCompanyArray() {

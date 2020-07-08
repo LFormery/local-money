@@ -3,7 +3,7 @@
     <div>
         <p>Mon solde : {{solde}} MCL</p>
         <p>Je souhaite faire un envoi d’une valeur de</p>
-        <o-transaction-input v-model="transferedMoney" label="MLC" :errors="errors" name="sum_to_send" />
+        <o-transaction-input v-model="transfered_money" label="MLC" :errors="errors" name="sum_to_send" />
     </div>
   </ValidationProvider>
 </template>
@@ -14,12 +14,12 @@ import formMixin from '@/mixins/formMixin';
 export default {
   data() {
     return {
-      transferedMoney: '',
+      transfered_money: '',
     };
   },
   watch: {
-    transferedMoney(newVal) {
-      this.$emit('updateForm', { transferedMoney: newVal });
+    transfered_money(newVal) {
+      this.$emit('updateForm', { transfered_money: newVal });
     },
   },
   computed: {

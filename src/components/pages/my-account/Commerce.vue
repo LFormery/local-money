@@ -3,7 +3,7 @@
     <!-- <ActualityFilter :filters="filtersArray">
       <template> Les entreprises du réseaux  </template>
     </ActualityFilter> -->
-    <l-wrapper-block>
+    <l-wrapper-block ref="lWrapperBlock">
       <m-card-post :hasFooter="false" v-for="(company, index) in companiesList" :key="index"  >
         <template v-slot:header> {{ company.company_name }} </template>
         <template v-slot:main> Deescription: {{ company.category }} de {{ company.first_name }}</template>
@@ -38,6 +38,7 @@ export default {
   },
   mounted() {
     this.$Api.getCompanyList().then(() => { });
+    this.$anime.animationOnMounted(this.$refs.lWrapperBlock.$el.querySelectorAll('.cardPost'));
   },
 };
 </script>

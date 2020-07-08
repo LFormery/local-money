@@ -1,7 +1,7 @@
 <template>
   <div class="wrapperBlock" :style="{ 'box-shadow' : $props.boxShadow ,'background-color' : currentBackgroundColor  }">
-    <p class="title">
-      <slot name="title"></slot>
+    <p>
+      <slot class="title" name="title"></slot>
     </p>
     <slot></slot>
     <slot name="bottom"></slot>
@@ -31,11 +31,11 @@ export default {
 .wrapperBlock {
   border-radius: 35px;
   padding: 40px 25px;
-  padding-top: 47px;
-  margin: 10px 0px;
+  margin: 10px 0px 20px 0;
 
-}
-.title {
-  @include title;
+  .title {
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
 }
 </style>

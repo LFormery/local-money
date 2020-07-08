@@ -33,3 +33,8 @@ Librarie Javascript ***Veevalidate***
 
 Nous pensons que Veevalidate est une libraire nécessaire afin de gérer la validation de nos différents formulaire.
 Accompagner de VueI18n les messages d'erreur sont gérer par vue Veevalidate et automatiquement lié au rules.
+
+Librarie Javascript ***GreenSock***
+
+Apres reflexion nous pensons que cette librarie est la meilleur pour animé et donner vie a notre application.
+GreenSock est recconu pour sa legerté et son optimisation de plus sa syntaxe simple permet une prise en main rapide et efficace.

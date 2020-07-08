@@ -60,7 +60,13 @@ export default {
   },
   watch: {
     model(newVal, oldVal) {
-      const regex = new RegExp('[0-9]| ');
+      let regex;
+      if (this.mask) {
+        const letterAutorisate = Array.from(this.mask).filter((letter) => letter !== '#');
+        regex = new RegExp(`[0-9]| |${letterAutorisate}`);
+      } else {
+        regex = new RegExp('[0-9]| ');
+      }
 
       if (newVal > oldVal) {
         if (

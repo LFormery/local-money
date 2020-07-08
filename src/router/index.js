@@ -1,12 +1,14 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Inscription from '@/views/Inscription.vue';
-import Register from '@/views/Register.vue';
-import MyAccount from '@/views/MyAccount.vue';
-import Confirm from '@/views/ConfirmPage.vue';
 import store from '@/store';
-import inscriptionChildrens from './children/inscription';
+
+import Register from '@/views/Register.vue';
+import Confirm from '@/views/ConfirmPage.vue';
+import MyAccount from '@/views/MyAccount.vue';
+import Inscription from '@/views/Inscription.vue';
+import Landing from '../components/pages/landing/Landing.vue';
 import myAccountChildrens from './children/myAccount';
+import inscriptionChildrens from './children/inscription';
 
 Vue.use(VueRouter);
 
@@ -38,6 +40,14 @@ const routes = [
     path: 'confirmation',
     name: 'Confirmation',
     component: Confirm,
+    meta: {
+      requireAuth: true,
+    },
+  },
+  {
+    path: '/presentation-de-l\'app',
+    name: 'Landing',
+    component: Landing,
     meta: {
       requireAuth: true,
     },

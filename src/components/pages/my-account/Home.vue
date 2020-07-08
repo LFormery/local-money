@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" ref="toto">
 
     <HeaderInformation :name="userInfomations.first_name">
       <template v-slot:mainText>
@@ -12,15 +12,7 @@
     <m-my-money></m-my-money>
     <l-wrapper-block>
       <template v-slot:title > Mes dernières transactions</template>
-      <m-card-transaction
-        v-for="(transaction, index) in lastTrasacton"
-        :key="index"
-        :name="transaction.beneficiary_name"
-        :date="transaction.date"
-        :sum="transaction.transfered_money"
-        :statusTransactionUser="transaction.status_transaction_user"
-
-      ></m-card-transaction>
+      <m-card-transaction v-for="(transaction, index) in lastTrasacton" :key="index" :name="`utilisateur ${transaction.id}`" :date="transaction.date" :sum="transaction.transfered_money" />
       <template v-slot:bottom ><a-link class="link" @click.native="$router.push({name : 'MyTransaction'})">Voir toutes mes transactions</a-link> </template>
     </l-wrapper-block>
     <l-wrapper-block>
@@ -73,7 +65,6 @@ export default {
       });
       return lastTransaction;
     },
-
     lastPost() {
       const lastPost = [];
       for (let i = 0; i < this.lastNumber; i++) {
@@ -83,6 +74,10 @@ export default {
       }
       return lastPost;
     },
+  },
+  mounted() {
+    const target = document.querySelectorAll('.wrapperBlock');
+    this.$anime.animationOnMounted(target);
   },
 };
 </script>

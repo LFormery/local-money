@@ -22,14 +22,15 @@ export default [
     },
   },
 
-  {
-    path: 'choisissez-votre-carte',
-    component: () => import('@/components/pages/my-account/transaction/ChoiceBankCard.vue'),
-    name: 'ChoiceBankCard',
-    meta: {
-      requireAuth: true,
-    },
-  },
+  // {
+  //   path: 'choisissez-votre-carte',
+  //   component: () => import('@/components/pages/my-account/transaction/ChoiceBankCard.vue'),
+  //   name: 'ChoiceBankCard',
+  //   meta: {
+  //     requireAuth: true,
+  //     nextName: 'SelectUserTransaction',
+  //   },
+  // },
 
   {
     path: 'choisissez-votre-beneficiaire/',

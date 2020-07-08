@@ -1,5 +1,5 @@
 <template>
-  <div class="navBar" :class="{'isOpen' : isOpen}">
+  <div class="navBar">
     <a-icone-more @click.native="$emit('updateState')" class="buttonMore" :class="{'rotate' : isOpen}" />
     <div class="navBar__visiblePart">
       <a-navbar-picto
@@ -12,12 +12,12 @@
       />
     </div>
     <div class="navBar__hiddenPart">
-      <a
+      <span
         v-for="(link, index) in navPagesSecondary"
         :key="'icone_nave_hidden_' + index"
         @click="link.functionBind()"
       >{{ link.pageNameBind}}
-      </a>
+      </span>
     </div>
   </div>
 </template>
@@ -85,10 +85,11 @@ export default {
     background: white;
     width: 90vw;
     margin: auto;
-    height: 66%;
+    height: 71%;
     border-radius: 30px;
     padding: 20px;
     padding-top: 5vh;
+    padding-bottom: 60px;
   }
   .wrapper--links {
     font-size: 11px;
@@ -104,18 +105,6 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-  }
-
-  @media screen and (min-width: 1085px) {
-    top: -20px;
-    right: 0px;
-    width: 370px;
-    height: 110vh;
-    padding-top: 53px;
-    transform: translateY(0px) !important;
-    .navBar__hiddenPart {
-      width: auto;
-    }
   }
 }
 </style>

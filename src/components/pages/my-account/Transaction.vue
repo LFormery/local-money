@@ -4,7 +4,9 @@
       <div class="validationMessageContainer">
         <l-wrapper-block backgroundColor="#F5F5F5">
           <div class="messageConfirmation">
-            <p ref="messagePoppin"></p>
+            <p
+              ref="messagePoppin"
+            >Êtes-vous sûr de vouloir {{transferedMoney}} MLC, à {{beneficiaryAccountId}} ( {nom du bénéficiaire} ) ?</p>
           </div>
           <template v-slot:bottom>
             <a-button
@@ -22,7 +24,7 @@
             >NON</a-button>
             <a-button
               v-show="!transactionOnload && trasactionError"
-              @click.native="$router.push({ name : 'MyTransaction'}); popinsOpen = false"
+              @click.native="$router.push({ name : 'MyTransaction'})"
               width="100%"
             >Revenir plus tard</a-button>
           </template>
@@ -54,12 +56,11 @@
             :initFormData="{...formDatas}"
             @updateForm="( formData ) => { updateForm(formData) }"
             @updateFormValid="(val) => {formValid = val}"
-            :childreOnLoad="childreOnLoad"
           />
         </template>
         <template v-slot:bottom>
           <div class="buttonWrapper">
-            <a-button type="submit" :onload="childreOnLoad" width="100%">Suivant</a-button>
+            <a-button type="submit" width="100%">Suivant</a-button>
           </div>
         </template>
       </l-form-myacount>
@@ -76,10 +77,16 @@ export default {
       formDatas: {},
       trasactionError: false,
       transactionOnload: false,
-      childreOnLoad: false,
       mode: this.$route.name,
       type: '',
-      popinsOpen: false,
+      popins: {
+        Buy: {
+          state: false,
+        },
+        ConvertMoney: {
+          state: false,
+        },
+      },
       switchButton: {
         leftText: {
           text: 'Payer',
@@ -96,11 +103,7 @@ export default {
     $route(to) {
       if (to.name === 'ConvertMoney' || to.name === 'Buy') {
         this.mode = to.name;
-      }
-    },
-    mode(newVal) {
-      if (newVal === 'ConvertMoney' || newVal === 'Buy') {
-        this.$router.push({ name: newVal }).catch(() => {});
+        console.log(this.mode);
       }
     },
   },
@@ -112,58 +115,49 @@ export default {
         ...curentFormData,
       };
     },
-    formatForm(date) {
-      const newDate = date.replace(/-/g, '/').slice();
-      return `${newDate.slice(5)}/${newDate.slice(0, 2)}`;
-    },
     updatedMode(option) {
       this.$router.push({ name: option });
     },
     goToPreviousPage() {
       this.$router.go(-1);
     },
-
-    closePopPin() {
-      if (!this.transactionOnload) {
-        this.popinsOpen = false;
-      }
-    },
-    putErroPoppin() {
-      this.$refs.messagePoppin.innerHTML = 'une erreure ses produite veuillez réessayer plus tard 😔';
-      this.trasactionError = true;
-      this.transactionOnload = false;
-    },
-    putSuccessPoppin() {
-      this.$store.dispatch(
-        'setConfirmPageMessage',
-        'Votre transaction à bien été faite',
-      );
-      this.$router.push({ name: 'Confirmation' });
-      this.transactionOnload = false;
-    },
-
-    submitBuy() {
-      this.transactionOnload = true;
-      this.$Api
-        .putTransferMoney(this.formDatas)
-        .then(() => {
-          this.putSuccessPoppin();
-        })
-        .catch(() => {
-          console.log('ok');
-          this.putErroPoppin();
-        });
-    },
-
-    submitForm() {
-      if (!this.transactionOnload) {
-        if (this.mode === 'Buy') {
-          this.submitBuy();
-        } else if (this.mode === 'ConvertMoney') {
-          this.convert();
+    submit(valid) {
+      if (valid) {
+        if (this.nextName) {
+          this.$router.push({ name: this.nextName });
+        } else {
+          this.popins[this.mode].state = true;
         }
       }
     },
+    closePopPin() {
+      if (!this.transactionOnload) {
+        this.popins[this.mode].state = false;
+      }
+    },
+    submitForm() {
+      this.formDatas.emiterAccountId = `${this.transferId}`;
+      if (!this.transactionOnload) {
+        this.transactionOnload = true;
+        this.$Api
+          .putTransferMoney(this.formDatas)
+          .then(() => {
+            this.$store.dispatch(
+              'setConfirmPageMessage',
+              'Votre transaction à bien été faite',
+            );
+            this.$router.push({ name: 'Confirmation' });
+            this.transactionOnload = false;
+          })
+          .catch(() => {
+            this.$refs.messagePoppin.innerHTML = 'une erreure ses produite veuillez réessayer plus tard 😔';
+            this.trasactionError = true;
+            this.transactionOnload = false;
+          });
+      }
+    },
+<<<<<<< HEAD
+=======
 
     convert() {
       this.transactionOnload = true;
@@ -179,7 +173,11 @@ export default {
 
     validationCovertion() {
       this.childreOnLoad = true;
-      this.$Api.checkCreditCard({ numbers_card: this.formDatas.numbers_card, date: this.formatForm(this.formDatas.date), cvc: this.formDatas.cvc }).then(() => {
+      const { transfered_money, numbers_card, cvc } = this.formDatas;  // eslint-disable-line
+      const date = this.formatForm(this.formDatas.date);
+      this.$Api.checkCreditCard({
+        transfered_money, numbers_card, date, cvc,
+      }).then(() => {
         this.$refs.messagePoppin.innerHTML = `Êtes-vous sûr de vouloir changer ${this.formDatas.transfered_money} €, en ${this.formDatas.transfered_money} MCL. Sachez que la reconversion vers l'euro ne sera pas possible.`;
         this.popinsOpen = true;
         this.childreOnLoad = false;
@@ -192,7 +190,8 @@ export default {
     },
 
     validationBuy() {
-      this.$refs.messagePoppin.innerHTML = 'Êtes-vous sûr de vouloir envoyer {{transferedMoney}} MLC, au bénéficier  ?';
+      const { transfered_money, beneficiaryAccountNumber } = this.formDatas;  // eslint-disable-line
+      this.$refs.messagePoppin.innerHTML = `Êtes-vous sûr de vouloir envoyer ${transfered_money} MLC, au bénéficier ${beneficiaryAccountNumber} ?`;// eslint-disable-line
       this.popinsOpen = true;
     },
 
@@ -208,20 +207,27 @@ export default {
       }
     },
 
+>>>>>>> develop
   },
   computed: {
     ...mapGetters(['transferId']),
     transferedMoney() {
       return this.formDatas && this.formDatas.transferedMoney;
     },
-    beneficiaryAccountId() {
-      return this.formDatas && this.formDatas.beneficiaryAccountId;
+    beneficiaryAccountNumber() {
+      return this.formDatas && this.formDatas.beneficiaryAccountNumber;
     },
     canGoToPreviousPage() {
       return this.$route.name !== 'ConvertMoney' && this.$route.name !== 'Buy';
     },
     nextName() {
       return this.$route.meta.nextName;
+    },
+    popinsOpen() {
+      return (
+        (this.popins.Buy && this.popins.Buy.state)
+        || (this.popins.ConvertMoney && this.popins.ConvertMoney.state)
+      );
     },
     currentPopPin() {
       return this.popins[this.mode];

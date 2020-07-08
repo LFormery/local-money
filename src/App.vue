@@ -1,9 +1,7 @@
 <template>
-<div class="mainWrapper">
   <div id="app">
     <router-view />
   </div>
-</div>
 </template>
 
 <script>
@@ -92,23 +90,27 @@ export default {
     this.$Api.addEventListener('remove-contact', (event) => this.$store.dispatch('removeContact', event.detail));
     this.$Api.addEventListener('composant-gouvernanceList', (event) => this.$store.dispatch('setGouvernanceList', event.detail));
   },
+  methods: {
+    setAppMargin() {
+      document.querySelector('#app').style.margin = '0px';
+    },
+  },
+  watch: {
+    $route(to) {
+      if (to.name === 'Langing') {
+        this.setAppMargin();
+      }
+    },
+  },
 };
 
 </script>
 
 <style lang="scss">
-
 #app {
   min-height: 100vh;
   max-width: 687px;
   margin: auto;
-}
-
-.mainWrapper {
-  @media screen and (min-width: 1085px) {
-    padding-left: 350px;
-    padding-right: calc(60vh - 350px);
-  }
 }
 body {
    background-color: #00000005;
